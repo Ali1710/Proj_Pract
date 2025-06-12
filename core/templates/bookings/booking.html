@@ -1,0 +1,369 @@
+<!-- filepath: c:\Users\user\-Python-project-\core\templates\bookings\booking.html -->
+
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<style>
+    /* Основной стиль для страницы */
+    body {
+        background-color: #f9f9fb;
+        font-family: 'Segoe UI', sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Шапка */
+    .navbar {
+        background-color: rgba(0, 0, 0, 0.85);
+        padding: 10px 20px;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+    }
+
+    .navbar-brand {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: #fff;
+    }
+
+    .navbar-nav .nav-link {
+        font-size: 1rem;
+        padding: 8px 15px;
+        color: #fff;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: #1cc88a;
+    }
+
+    /* Футер */
+    footer {
+        background-color: #222;
+        color: #fff;
+        padding: 20px 0;
+        font-size: 0.9rem;
+        text-align: center;
+        position: relative;
+        bottom: 0;
+        width: 100%;
+    }
+
+    footer p {
+        margin: 0;
+    }
+
+    /* Контентная область */
+    .content-wrapper {
+        padding-top: 80px; /* Отступ для шапки */
+        padding-bottom: 60px; /* Отступ для футера */
+    }
+
+    /* Карточки */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 1.5rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        backdrop-filter: blur(12px);
+        animation: fadeInUp 0.8s ease forwards;
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    @keyframes fadeInUp {
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    /* Кнопка */
+    .btn-notion {
+        background: linear-gradient(135deg, #4e73df, #1cc88a);
+        color: #fff;
+        font-size: 16px;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-transform: uppercase;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: none;
+        width: 100%;
+    }
+
+    .btn-notion:hover {
+        background: linear-gradient(135deg, #1cc88a, #4e73df);
+        transform: scale(1.05);
+    }
+
+    /* Календарь */
+    #calendar {
+        border-radius: 1rem;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        #calendar {
+            font-size: 0.8rem;
+        }
+    }
+
+    /* Поля формы */
+    .form-control, select {
+        background-color: #fff;
+        border-radius: 12px;
+        padding: 10px 15px;
+        border: 2px solid #e0e0e0;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        margin-bottom: 15px;
+    }
+
+    .form-control:focus, select:focus {
+        outline: none;
+        border-color: #4e73df;
+        box-shadow: 0 0 5px rgba(78, 115, 223, 0.8);
+    }
+
+    .form-control::placeholder, select::placeholder {
+        color: #aaa;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    /* Заголовок календаря */
+    .calendar-header {
+        margin-bottom: 15px;
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: #333;
+    }
+
+    /* Кнопки */
+    .btn {
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: scale(1.03);
+        background-color: #007bff;
+    }
+
+    @media (max-width: 768px) {
+        .glass-card {
+            margin-bottom: 1.5rem;
+        }
+
+        .calendar-header {
+            text-align: center;
+        }
+
+        #calendar {
+            width: 100%;
+        }
+    }
+
+/* Уточняем: стили внутри popup flatpickr */
+.flatpickr-calendar .numInput {
+    border: 2px solid #4e73df !important;
+    border-radius: 8px !important;
+    font-weight: bold;
+    color: #333;
+    background-color: #ffffffcc !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Стили стрелочек */
+.flatpickr-calendar .arrowUp,
+.flatpickr-calendar .arrowDown {
+    background: #4e73df !important;
+    color: white !important;
+    border-radius: 6px;
+    padding: 2px 5px;
+}
+
+/* Стили выбора чисел */
+.flatpickr-calendar .numInputWrapper {
+    box-shadow: 0 0 6px rgba(78, 115, 223, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0 2px;
+}
+
+/* Стили списка значений при наведении */
+.flatpickr-calendar .flatpickr-time input:hover {
+    background-color: #e8f0fe !important;
+}
+
+</style>
+
+<div class="container my-5">
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="p-4 glass-card">
+                <h2 class="mb-4 fw-semibold">Gym Booking 🏋️</h2>
+
+                {% if messages %}
+                    <div class="mb-3">
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <form method="post" action="{% url 'bookings:booking' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_hall">Select Hall</label>
+                        {{ form.hall }}
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_booking_date">Booking Date</label>
+                        <input type="date" class="form-control flatpickr-date"
+                               id="id_booking_date"
+                               name="{{ form.booking_date.name }}"
+                               value="{{ form.booking_date.value|default_if_none:'' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_start_time">Start Time</label>
+                        <input type="time" class="form-control flatpickr-time"
+                               id="id_start_time"
+                               name="{{ form.start_time.name }}"
+                               value="{{ form.start_time.value|default_if_none:'' }}">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="id_end_time">End Time</label>
+                        <input type="time" class="form-control flatpickr-time"
+                               id="id_end_time"
+                               name="{{ form.end_time.name }}"
+                               value="{{ form.end_time.value|default_if_none:'' }}">
+                    </div>
+
+                    <button type="submit" class="btn btn-notion" id="submitBtn" disabled>
+                        🔒 Book Now
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <div class="glass-card p-3">
+                <h5 class="calendar-header">📅 Select Date and Time:</h5>
+
+                <div class="card shadow-sm rounded-3 p-3 mt-3">
+                    <h5 class="mb-3"><i class="bi bi-calendar-event"></i> Selected Booking Details</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"><strong>Date:</strong> <span id="preview_date">–</span></li>
+                        <li class="list-group-item"><strong>Start Time:</strong> <span id="preview_start">–</span></li>
+                        <li class="list-group-item"><strong>End Time:</strong> <span id="preview_end">–</span></li>
+                        <li class="list-group-item"><strong>Hall:</strong> <span id="preview_hall">–</span></li>
+                    </ul>
+                    <div class="alert alert-warning mt-3" role="alert">
+                        ⚠️ Please ensure the selected time slot is available.
+                    </div>
+                </div>
+
+                <div id="calendar" class="mt-4"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JS + CSS scripts -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://npmcdn.com/flatpickr/dist/l10n/ru.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+    const submitBtn = document.getElementById("submitBtn");
+    const hallSelect = document.getElementById("id_hall");
+    const bookingDateInput = document.getElementById("id_booking_date");
+    const startTimeInput = document.getElementById("id_start_time");
+    const endTimeInput = document.getElementById("id_end_time");
+
+    const previewDate = document.getElementById("preview_date");
+    const previewStart = document.getElementById("preview_start");
+    const previewEnd = document.getElementById("preview_end");
+    const previewHall = document.getElementById("preview_hall");
+
+    calendarEl.style.display = "none";
+
+    function updatePreview() {
+        previewDate.textContent = bookingDateInput.value || "–";
+        previewStart.textContent = startTimeInput.value || "–";
+        previewEnd.textContent = endTimeInput.value || "–";
+        previewHall.textContent = hallSelect.options[hallSelect.selectedIndex].text || "–";
+    }
+
+    function checkForm() {
+        updatePreview();
+        submitBtn.disabled = !(hallSelect.value && bookingDateInput.value && startTimeInput.value && endTimeInput.value);
+    }
+
+    hallSelect.addEventListener("change", function() {
+        calendarEl.style.display = hallSelect.value ? "block" : "none";
+        checkForm();
+    });
+
+    bookingDateInput.addEventListener("input", checkForm);
+    startTimeInput.addEventListener("input", checkForm);
+    endTimeInput.addEventListener("input", checkForm);
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        slotDuration: '01:00:00',
+        slotMinTime: "08:00:00",
+        slotMaxTime: "22:00:00",
+        locale: 'en',
+        selectable: true,
+        height: 550,
+        headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'timeGridDay,timeGridWeek'
+        },
+        select: function (info) {
+            const startDate = info.startStr.split("T")[0];
+            const startTime = info.startStr.split("T")[1].slice(0, 5);
+            const endTime = info.endStr.split("T")[1].slice(0, 5);
+
+            bookingDateInput.value = startDate;
+            startTimeInput.value = startTime;
+            endTimeInput.value = endTime;
+            checkForm();
+        },
+        events: "{% url 'bookings:api_booked_slots' %}",
+        eventColor: '#dc3545',
+        eventTextColor: '#fff'
+    });
+
+    calendar.render();
+
+    flatpickr(".flatpickr-date", {
+        dateFormat: "Y-m-d",
+        locale: "ru"
+    });
+
+    flatpickr(".flatpickr-time", {
+        enableTime: true,
+        noCalendar: true,
+        dateFormat: "H:i",
+        time_24hr: true
+    });
+});
+</script>
+
+{% endblock %}

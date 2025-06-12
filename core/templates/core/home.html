@@ -1,0 +1,164 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block title %}Home - DAIYNDAL!{% endblock %}
+
+{% block content %}
+<header class="hero-section">
+    <video autoplay muted loop playsinline class="bg-video">
+        <source src="{% static 'videos/fon.mp4' %}" type="video/mp4">
+        Your browser does not support video.
+    </video>
+    <div class="overlay"></div>
+    <div class="content text-white text-center">
+        <h1 class="display-4">Welcome to DAIYNDAL!</h1>
+        <p class="lead">Find and book your perfect workout in two clicks.</p>
+        {% if not user.is_authenticated %}
+            <a href="{% url 'users:register' %}" class="btn btn-primary btn-lg mt-3">Get Started</a>
+        {% endif %}
+    </div>
+</header>
+
+<div class="container mt-5">
+    <section class="py-5">
+        <h2 class="text-center mb-4">Why is DAIYNDAL your best choice?</h2>
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-calendar-check display-4 text-primary mb-3"></i>
+                        <h5 class="card-title">Flexible Schedule</h5>
+                        <p class="card-text">Choose a convenient workout time that perfectly fits your schedule.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-pin-map display-4 text-success mb-3"></i>
+                        <h5 class="card-title">Wide Selection of Gyms</h5>
+                        <p class="card-text">Get access to the best gyms in the city, located in areas convenient for you.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-person-hearts display-4 text-warning mb-3"></i>
+                        <h5 class="card-title">Qualified Trainers</h5>
+                        <p class="card-text">Train under the guidance of experienced and certified professionals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-4">Our Clients' Reviews</h2>
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">"DAIYNDAL helped me find a great gym near my home. Booking was very quick and convenient!"</p>
+                            <footer class="blockquote-footer">Aigerim, <cite title="Review source">Almaty</cite></footer>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text">"Very happy I used DAIYNDAL. Found a personal trainer who helped me achieve my goals!"</p>
+                            <footer class="blockquote-footer">Ruslan, <cite title="Review source">Nur-Sultan</cite></footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" class="btn btn-outline-info btn-sm">More Reviews</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-light">
+        <div class="container text-center">
+            <h2 class="mb-4">Ready to start your journey to health?</h2>
+            <p class="lead mb-3">Join DAIYNDAL today and discover the world of fitness!</p>
+            {% if not user.is_authenticated %}
+                <a href="{% url 'users:register' %}" class="btn btn-success btn-lg">Register Now</a>
+            {% endif %}
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Explore Our Partner Gyms</h2>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{% static 'images/fitnessgym.png' %}" class="card-img-top" alt="Gym 1">
+                        <div class="card-body">
+                            <h5 class="card-title">FitZone City Gym</h5>
+                            <p class="card-text">A modern fitness center with CrossFit, yoga, and a full set of gym equipment</p>
+                            <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{% static 'images/bodybuilding.png' %}" class="card-img-top" alt="Gym 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Iron Temple</h5>
+                            <p class="card-text">Specialized in strength training and bodybuilding.</p>
+                            <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{% static 'images/yoga_studio.png' %}" class="card-img-top" alt="Gym 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Zen Wellness Studio</h5>
+                            <p class="card-text">A peaceful space for yoga and meditation practices.</p>
+                            <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{% static 'images/crossfitgym.jpg' %}" class="card-img-top" alt="Gym 4">
+                        <div class="card-body">
+                            <h5 class="card-title">CrossFit Almaty</h5>
+                            <p class="card-text">High-intensity functional fitness training.</p>
+                            <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{% static 'images/football.jpg' %}" class="card-img-top" alt="Gym 5">
+                        <div class="card-body">
+                            <h5 class="card-title">Football</h5>
+                            <p class="card-text">Enjoy swimming pools and aquatic workout programs.</p>
+                            <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{% static 'images/boxing.jpg' %}" class="card-img-top" alt="Gym 6">
+                        <div class="card-body">
+                            <h5 class="card-title">Boxing Club KO</h5>
+                            <p class="card-text">Professional boxing training for all levels.</p>
+                            <a href="#" class="btn btn-sm btn-outline-secondary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{% url 'bookings:booking' %}" class="btn btn-primary btn-lg">Book Your Workout Now</a>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+body {
+    font-family: 'Recursive', sans-serif;
+    /* Другие стили для body */
+}
+
+h1, h2, .main-title {
+    font-family: 'Recursive', sans-serif;
+}
+
+.hero-section {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+}
+
+.bg-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 2;
+}
+
+.content {
+    position: relative;
+    z-index: 3;
+    padding-top: 30vh;
+}
+
+.navbar-logo {
+    height: 80px; /* Установите желаемую высоту логотипа */
+    width: auto; /* Сохраняем пропорции */
+    /* Следующие свойства помогут логотипу не влиять на высоту шапки */
+    max-height: 100%; /* Ограничиваем максимальную высоту относительно родителя */
+    object-fit: contain; /* Масштабируем изображение, сохраняя пропорции и помещая его внутрь контейнера */
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    padding-top: 10px; /* Попробуйте уменьшить */
+    padding-bottom: 10px; /* Попробуйте уменьшить */
+}
+
+.navbar {
+    padding-top: 0; /* Попробуйте обнулить */
+    padding-bottom: 0; /* Попробуйте обнулить */
+}
+
+.navbar-nav {
+    margin-left: auto; /* Выравнивание по правому краю */
+}
+

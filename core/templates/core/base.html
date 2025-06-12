@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}DAIYNDAL{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" href="{% static 'images/logo_daiyndal.png' %}" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;700&display=swap" rel="stylesheet">
+    {% block head %}{% endblock %}
+    {% block styles %}
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            font-family: 'Recursive', sans-serif;
+        }
+        .navbar {
+            background-color: #000 !important; /* always black */
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+            color: white !important;
+        }
+        .navbar-nav .nav-link {
+            font-weight: 500;
+            color: white !important;
+        }
+        .navbar-nav .nav-link.active {
+            text-decoration: underline;
+            text-underline-offset: 5px;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+        .user-avatar {
+        width: 36px;
+        height: 36px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 2px solid white;
+        background-color: #ccc;
+        }
+        @media (max-width: 768px) {
+            .navbar-nav {
+                text-align: center;
+            }
+            .navbar-nav .nav-link {
+                margin: 0.5rem 0;
+            }
+            .user-info {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .user-avatar {
+                margin-bottom: 0.5rem;
+            }
+        }
+    </style>
+    {% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'core:home' %}">DAIYNDAL</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto me-3">
+                <li class="nav-item"><a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'core:home' %}">Home</a></li>
+                <li class="nav-item"><a class="nav-link {% if '/bookings/booking/' in request.path %}active{% endif %}" href="{% url 'bookings:booking' %}">Booking</a></li>
+                {% if user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link {% if '/bookings/my-bookings/' in request.path %}active{% endif %}" href="{% url 'bookings:my_bookings' %}">My Bookings</a></li>
+                {% endif %}
+                <li class="nav-item"><a class="nav-link {% if '/about/' in request.path %}active{% endif %}" href="{% url 'core:about' %}">About Us</a></li>
+                <li class="nav-item"><a class="nav-link {% if '/contact/' in request.path %}active{% endif %}" href="{% url 'core:contact' %}">Contact</a></li>
+                {% if user.is_staff %}
+                <li class="nav-item"><a class="nav-link {% if request.path == '/admin/bookings/' %}active{% endif %}" href="{% url 'bookings:all_bookings' %}">All Bookings</a></li>
+                {% endif %}
+
+            </ul>
+
+            {% with current_url_name=request.resolver_match.url_name|default:'' %}
+    {% if current_url_name != 'about' and current_url_name != 'contact' %}
+        {% if user.is_authenticated %}
+            <div class="user-info ms-3">
+                <a href="{% url 'users:profile' %}" class="text-white text-decoration-none d-flex align-items-center gap-2">
+                    <img src="{% if user.profile.avatar and user.profile.avatar.url %}
+                                {{ user.profile.avatar.url }}
+                              {% else %}
+                                {% static 'images/default-avatar.png' %}
+                              {% endif %}"
+                         alt="Avatar"
+                         class="user-avatar">
+                    {{ user.name|default:user.email }}
+                </a>
+
+                <form method="POST" action="{% url 'logout' %}" class="d-inline ms-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                </form>
+            </div>
+        {% else %}
+            <div class="ms-3">
+                <a href="{% url 'users:login' %}" class="btn btn-outline-light btn-sm me-2">Login</a>
+                <a href="{% url 'users:register' %}" class="btn btn-light btn-sm">Register</a>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endwith %}
+
+
+        </div>
+    </div>
+</nav>
+
+<!-- Content -->
+<main class="flex-grow-1 pt-5 mt-4 content-wrapper">
+    {% block content %}
+    {% endblock %}
+</main>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3 mt-auto">
+    <p class="mb-0">&copy; {{ now|date:"Y" }} Gym Booking. All rights reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

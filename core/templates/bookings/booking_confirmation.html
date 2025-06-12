@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %}
+{% block content %}
+    <div class="container mt-5">
+        <h1>Booking Confirmation</h1>
+        <p>Hall: {{ booking.hall.name }} ({{ booking.hall.gym.name }})</p>
+        <p>Date: {{ booking.booking_date }}</p>
+        <p>Time: {{ booking.start_time }} - {{ booking.end_time }}</p>
+        <a href="{% url 'bookings:booking' %}" class="btn btn-secondary">Book More</a>
+    </div>
+{% endblock %}
