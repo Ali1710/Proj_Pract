@@ -68,7 +68,7 @@ class Hall(models.Model):
     gym = models.ForeignKey(Gym, related_name='halls', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     description = models.TextField()
-    capacity = models.IntegerField()
+    capacity = models.IntegerField(null=True, blank=True)
     type = models.CharField(max_length=255)
     image_url = models.URLField(blank=True, null=True)
 
